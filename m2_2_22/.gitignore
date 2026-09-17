@@ -1,1 +1,11 @@
 build/
+
+*.o
+*.obj
+*.su
+*.elf
+*.map
+*.bin
+*.hex
+*.list
+.cache/
