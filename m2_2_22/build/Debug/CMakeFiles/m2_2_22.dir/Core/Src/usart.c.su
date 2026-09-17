@@ -1,3 +1,0 @@
-/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/Core/Src/usart.c:31:6:MX_USART1_UART_Init	8	static
-/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/Core/Src/usart.c:59:6:HAL_UART_MspInit	48	static
-/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/Core/Src/usart.c:89:6:HAL_UART_MspDeInit	16	static

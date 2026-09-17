@@ -1,4 +1,0 @@
-/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/BSP/relay.c:10:6:relay_init	32	static
-/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/BSP/relay.c:29:6:relay_set	16	static
-/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/BSP/relay.c:42:6:relay_toggle	8	static
-/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/BSP/relay.c:46:6:relay_is_on	4	static

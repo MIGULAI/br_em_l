@@ -1,4 +1,0 @@
-/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/BSP/bsp.c:5:6:bsp_led_write	16	static
-/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/BSP/bsp.c:11:6:bsp_led_toggle	8	static
-/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/BSP/bsp.c:16:10:bsp_millis	8	static
-/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/BSP/bsp.c:21:5:_write	24	static
