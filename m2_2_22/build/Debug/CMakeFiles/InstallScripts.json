@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/build/Debug/cmake_install.cmake",
+		"/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/build/Debug/cmake/stm32cubemx/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

@@ -20,7 +20,14 @@ void app_run(void)
 {
     if ((uint32_t)(bsp_millis() - relay_tick) >= RELAY_MIN_INTERVAL_MS) {
         relay_tick += RELAY_MIN_INTERVAL_MS;
-        relay_toggle();
-        printf("relay=%d\n", relay_is_on());
+
+        bool     target = !relay_is_on();
+        uint32_t delay_us = relay_measure_switch_delay_us(target, 100U);
+
+        if (delay_us == UINT32_MAX) {
+            printf("relay=%d switch_delay=TIMEOUT\n", target);
+        } else {
+            printf("relay=%d switch_delay_us=%lu\n", target, delay_us);
+        }
     }
 }
