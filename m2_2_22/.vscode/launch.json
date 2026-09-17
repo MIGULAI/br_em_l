@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Black Pill",
+      "type": "cortex-debug",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "executable": "${workspaceFolder}/build/Debug/m2_2_22.elf",
+      "servertype": "stlink",
+      "serverpath": "/home/ivanvitiuk/st/stm32cubeclt_1.22.0/STLink-gdb-server/bin/ST-LINK_gdbserver",
+      "stm32cubeprogrammer": "/home/ivanvitiuk/st/stm32cubeclt_1.22.0/STM32CubeProgrammer/bin",
+      "armToolchainPath": "/home/ivanvitiuk/st/stm32cubeclt_1.22.0/GNU-tools-for-STM32/bin",
+      "svdFile": "/home/ivanvitiuk/st/stm32cubeclt_1.22.0/STMicroelectronics_CMSIS_SVD/STM32F411.svd",
+      "device": "STM32F411CE",
+      "interface": "swd",
+      "runToEntryPoint": "main",
+      "preLaunchTask": "Build",
+      "liveWatch": { "enabled": true, "samplesPerSecond": 4 }
+    }
+  ]
+}

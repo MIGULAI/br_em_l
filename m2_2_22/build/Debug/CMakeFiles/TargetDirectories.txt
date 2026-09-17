@@ -1,0 +1,6 @@
+/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/build/Debug/CMakeFiles/m2_2_22.dir
+/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/build/Debug/CMakeFiles/edit_cache.dir
+/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/build/Debug/CMakeFiles/rebuild_cache.dir
+/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/build/Debug/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir
+/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/build/Debug/cmake/stm32cubemx/CMakeFiles/edit_cache.dir
+/home/ivanvitiuk/workspace/embeded/br_em_l/m2_2_22/build/Debug/cmake/stm32cubemx/CMakeFiles/rebuild_cache.dir
