@@ -47,11 +47,12 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
    App/app.c
+   BSP/motor.c
    BSP/bsp.c
    BSP/encoder.c
    BSP/button.c
-   Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c
-   Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c
+#    Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c
+#    Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c
 
 )
 
@@ -65,7 +66,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add project symbols (macros)
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined symbols
-    HAL_TIM_MODULE_ENABLED
+    # HAL_TIM_MODULE_ENABLED
 )
 
 # Remove wrong libob.a library dependency when using cpp files
