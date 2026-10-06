@@ -86,7 +86,6 @@ void app_run(void) {
   motor_set_duty(running ? (uint16_t)duty : 0u);
   if (HAL_GetTick() - last_print >= 500u) {
     last_print = HAL_GetTick();
-    printf("bemf %lu mV, rpm %lu\n", motor_get_bemf_mv(), motor_get_rpm());
   }
 }
 
