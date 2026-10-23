@@ -1,71 +1,80 @@
 #include "button.h"
+#include <stddef.h>
 #include <stdio.h>
 
-#define BUTTON_DEBOUNCE_MS 50U
-
-struct button_s {
-  button_config_t config;
-  ButtonStatus status;
-  bool pressed;                   // debounced physical level, released<->pressed
-  bool press_event;               // one-shot: latched on press, consumed by button_read()
-  volatile bool edge_pending;     // set by the ISR, cleared once debounced
-  volatile uint32_t last_edge_tick;
-};
-
-static struct button_s self;
-
-// GPIO pin, EXTI and NVIC setup for the button is owned by CubeMX-generated
-// MX_GPIO_Init() (gpio.c), which runs before app_init() in main.c.
-button_handler_t button_init(button_config_t config) {
-  self.config = config;
-  self.status = BUTTON_ERROR;
-  self.pressed = false;
-  self.press_event = false;
-  self.edge_pending = false;
-  self.last_edge_tick = 0;
-  return &self;
+static bool read_pressed(const button_config_t *cfg) {
+  const GPIO_PinState level = HAL_GPIO_ReadPin(cfg->port, cfg->pin_mask);
+  return cfg->active_low ? (level == GPIO_PIN_RESET) : (level == GPIO_PIN_SET);
 }
 
-// Returns true exactly once per confirmed press, then resets until the next one.
-bool button_read(button_handler_t button) {
-  if (button == NULL || !button->press_event) {
-    return false;
+/* Регістр EXTI->IMR спільний для всіх ліній. Read-modify-write з головного
+ * циклу може перервати ISR іншої кнопки, і її зміна загубиться.
+ * Тому модифікація в критичній секції зі збереженням стану PRIMASK. */
+static void exti_line_enable(uint16_t pin_mask) {
+  const uint32_t primask = __get_PRIMASK();
+  __disable_irq();
+  EXTI->IMR |= pin_mask;
+  __set_PRIMASK(primask);
+}
+
+button_status_t button_init(button_t *btn, const button_config_t *config) {
+  if ((btn == NULL) || (config == NULL) || (config->port == NULL)) {
+    return BUTTON_ERR_PARAM;
   }
-  button->press_event = false;
-  return true;
+
+  btn->config = config;
+  btn->stable_state = read_pressed(config); /* без хибної події при старті */
+  btn->press_event = false;
+  btn->edge_pending = false;
+  btn->last_edge_tick = HAL_GetTick();
+  return BUTTON_OK;
 }
 
-void button_process(button_handler_t button) {
-  if (button == NULL || !button->edge_pending) {
+/* Контекст переривання: мінімум роботи, без printf і очікувань. */
+void button_irq_handler(button_t *btn) {
+  if ((btn == NULL) || (btn->config == NULL)) {
+    return; /* ще не ініціалізовано: HAL уже скинув прапорець, ігноруємо */
+  }
+  /* Блокування лінії на час антибрязкоту: один фронт = одне переривання
+   * замість десятків від брязкоту контактів. У ISR лінія вже не може
+   * бути перервана тією ж лінією, тому RMW тут безпечний. */
+  EXTI->IMR &= ~(uint32_t)btn->config->pin_mask;
+
+  btn->last_edge_tick = HAL_GetTick();
+  btn->edge_pending = true;
+}
+
+void button_process(button_t *btn) {
+  bool now;
+
+  if (!btn->edge_pending) {
     return;
   }
-
-  if ((HAL_GetTick() - button->last_edge_tick) < BUTTON_DEBOUNCE_MS) {
-    return; // line may still be bouncing, wait it out
+  if ((HAL_GetTick() - btn->last_edge_tick) < btn->config->debounce_ms) {
+    return; /* вікно антибрязкоту ще триває */
   }
-  button->edge_pending = false;
 
-  GPIO_PinState level = HAL_GPIO_ReadPin(button->config.port, button->config.pin);
-  bool physically_pressed = button->config.active_low ? (level == GPIO_PIN_RESET)
-                                                        : (level == GPIO_PIN_SET);
+  /* Порядок важливий: спочатку повторно ввімкнути переривання, потім
+   * читати рівень. Фронт після ввімкнення запустить новий цикл,
+   * тому зміна рівня між читанням і ввімкненням не загубиться. */
+  btn->edge_pending = false;
+  __HAL_GPIO_EXTI_CLEAR_IT(
+      btn->config->pin_mask); /* фронти брязкоту, що накопичились */
+  exti_line_enable(btn->config->pin_mask);
 
-  if (physically_pressed != button->pressed) {
-    button->pressed = physically_pressed;
-    button->status = BUTTON_OK;
-    if (physically_pressed) {
-      button->press_event = true;
-      printf("Button Pressed\n");
-    } else {
-      printf("Button Released\n");
+  now = read_pressed(btn->config);
+  if (now != btn->stable_state) {
+    btn->stable_state = now;
+    if (now) {
+      btn->press_event = true;
     }
   }
 }
 
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-  if (GPIO_Pin == self.config.pin) {
-    self.last_edge_tick = HAL_GetTick();
-    self.edge_pending = true;
+bool button_is_pressed(const button_t *btn) { return btn->stable_state; }
 
-    printf("detected press at %lu ms\n", self.last_edge_tick);
-  }
+bool button_was_pressed(button_t *btn) {
+  const bool event = btn->press_event;
+  btn->press_event = false;
+  return event;
 }
