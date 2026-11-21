@@ -12,7 +12,7 @@ adc_status_t potentiometer_init(potentiometer_config_t config, struct potentiome
     // get vref_real from calibration data
     uint16_t *vref_cal = (uint16_t *)VREFINT_CAL_ADDR;
     self->vref_real = *vref_cal * 3300 / 4095; 
-    self->k_calc = self->vref_real / Vref; // Calculate the scaling factor
+    self->k_calc = (float)self->vref_real / Vref; // Calculate the scaling factor
     printf("Potentiometer vref_real: %u\r\n", self->vref_real);
     return ADC_OK;
 }

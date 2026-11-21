@@ -37,8 +37,11 @@ void app_run(void) {
         potentiometer_read(&potentiometer_instance);
         uint32_t mv = potentiometer_instance.last_reading * 3300U / 4095U;
         uint32_t voltage = potentiometer_get_voltage(&potentiometer_instance, 3.3f); // Already in mV
-        printf("Potentiometer raw: %lu, calibrated voltage: %lu mV, uncalibrated voltage: %lu mV\r\n", potentiometer_instance.last_reading, voltage, mv);
-    }
+        int32_t vol_error = voltage - mv;
+        float error_percentage = (mv != 0) ? (float)vol_error * 100.0f / mv : 0.0f;
+       printf("raw: %lu, calibrated: %lu mV, uncalibrated: %lu mV, error: %ld mV, error: %.2f%%\r\n",
+       potentiometer_instance.last_reading, voltage, mv, vol_error, error_percentage);
+}
 }
 
 int _write(int file, char *ptr, int len) {
