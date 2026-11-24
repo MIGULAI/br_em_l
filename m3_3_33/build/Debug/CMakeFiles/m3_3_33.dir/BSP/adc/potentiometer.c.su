@@ -1,4 +1,0 @@
-/home/ivanvitiuk/workspace/embeded/br_em_l/m3_3_33/BSP/adc/potentiometer.c:7:14:potentiometer_init	40	static
-/home/ivanvitiuk/workspace/embeded/br_em_l/m3_3_33/BSP/adc/potentiometer.c:20:6:potentiometer_read	16	static
-/home/ivanvitiuk/workspace/embeded/br_em_l/m3_3_33/BSP/adc/potentiometer.c:34:6:potentiometer_is_ready	24	static
-/home/ivanvitiuk/workspace/embeded/br_em_l/m3_3_33/BSP/adc/potentiometer.c:43:10:potentiometer_get_voltage	16	static

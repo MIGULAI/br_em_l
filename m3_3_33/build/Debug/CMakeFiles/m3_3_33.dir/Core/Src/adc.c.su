@@ -1,3 +1,0 @@
-/home/ivanvitiuk/workspace/embeded/br_em_l/m3_3_33/Core/Src/adc.c:30:6:MX_ADC1_Init	24	static
-/home/ivanvitiuk/workspace/embeded/br_em_l/m3_3_33/Core/Src/adc.c:77:6:HAL_ADC_MspInit	48	static
-/home/ivanvitiuk/workspace/embeded/br_em_l/m3_3_33/Core/Src/adc.c:104:6:HAL_ADC_MspDeInit	16	static
